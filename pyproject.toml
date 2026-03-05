@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "joplin-utils"
+version = "0.1.0"
+description = "CLI utilities for Joplin reachability audit, text export, and note creation analytics."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Daniel Häggström" }]
+license = { file = "LICENSE" }
+dependencies = [
+  "requests>=2.31.0",
+  "networkx>=3.2.1",
+  "matplotlib>=3.8.0",
+]
+
+[project.scripts]
+joplin-utils = "joplin_utils.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
