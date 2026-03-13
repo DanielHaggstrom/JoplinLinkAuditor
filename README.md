@@ -32,6 +32,7 @@ pip install -e .
 ```env
 JOPLIN_BASE_URL=http://localhost:41184
 JOPLIN_TOKEN=your_token_here
+JOPLIN_REACHABILITY_INDEX_NOTE_ID=your_default_index_note_id
 ```
 
 You can also override values with CLI flags:
@@ -50,7 +51,7 @@ joplin-utils --help
 
 ```bash
 joplin-utils reachability --index-note-id <NOTE_ID>
-joplin-utils reachability --index-note-id <NOTE_ID> --output-json unreachable.json
+joplin-utils reachability --output-json unreachable.json
 ```
 
 ### Full export with tags

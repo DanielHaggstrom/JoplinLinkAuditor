@@ -12,6 +12,7 @@ from joplin_utils.commands.reachability import handle_reachability
 from joplin_utils.env import load_env_file, resolve_setting
 
 DEFAULT_BASE_URL = "http://localhost:41184"
+REACHABILITY_INDEX_NOTE_ENV = "JOPLIN_REACHABILITY_INDEX_NOTE_ID"
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -29,7 +30,10 @@ def _build_parser() -> argparse.ArgumentParser:
         "reachability",
         help="Audit notes unreachable from an index note.",
     )
-    p_reachability.add_argument("--index-note-id", required=True, help="Index/root note id")
+    p_reachability.add_argument(
+        "--index-note-id",
+        help=f"Index/root note id (defaults to {REACHABILITY_INDEX_NOTE_ENV})",
+    )
     p_reachability.add_argument("--output-json", help="Optional JSON report output path")
     p_reachability.set_defaults(handler=handle_reachability)
 
@@ -64,10 +68,18 @@ def _build_parser() -> argparse.ArgumentParser:
 
 
 def _build_client_from_args(args: argparse.Namespace) -> JoplinClient:
-    load_env_file(args.env_file)
     base_url = resolve_setting(args.base_url, "JOPLIN_BASE_URL", default=DEFAULT_BASE_URL, required=True)
     token = resolve_setting(args.token, "JOPLIN_TOKEN", required=True)
     return JoplinClient(base_url=base_url, token=token)
+
+
+def _resolve_command_settings(args: argparse.Namespace) -> None:
+    if args.command == "reachability":
+        args.index_note_id = resolve_setting(
+            args.index_note_id,
+            REACHABILITY_INDEX_NOTE_ENV,
+            required=True,
+        )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -75,6 +87,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     try:
+        load_env_file(args.env_file)
+        _resolve_command_settings(args)
         client = _build_client_from_args(args)
         return args.handler(args, client)
     except KeyboardInterrupt:

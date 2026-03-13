@@ -11,12 +11,13 @@ All commands support these global options:
 Audit which notes are disconnected from an index note in the undirected link graph.
 
 ```bash
-joplin-utils reachability --index-note-id <NOTE_ID> [--output-json report.json]
+joplin-utils reachability [--index-note-id <NOTE_ID>] [--output-json report.json]
 ```
 
 Options:
 
-- `--index-note-id` (required) note id used as the root of connectivity
+- `--index-note-id` optional note id used as the root of connectivity
+- `JOPLIN_REACHABILITY_INDEX_NOTE_ID` env fallback when `--index-note-id` is omitted
 - `--output-json` optional JSON report output path
 
 ## `export-full`
