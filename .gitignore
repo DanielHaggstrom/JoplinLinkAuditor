@@ -17,6 +17,7 @@ dist/
 *.db
 
 # Generated exports and analytics artifacts
+.exports/
 full_zettelkasten.txt
 journals.txt
 *.csv

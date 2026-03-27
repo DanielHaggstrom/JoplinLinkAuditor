@@ -22,15 +22,19 @@ Options:
 
 ## `export-full`
 
-Export every note to one text file, including title, id, tags, created/updated timestamps, and body.
+Export every note with title, id, tags, created/updated timestamps, and body.
 
 ```bash
-joplin-utils export-full [--output full_zettelkasten.txt]
+joplin-utils export-full [--mode combined] [--output full_zettelkasten.txt]
+joplin-utils export-full --mode per-note [--output .exports/full_zettelkasten]
 ```
 
 Options:
 
-- `--output` output text path (default: `full_zettelkasten.txt`)
+- `--mode` export mode: `combined` for one file, `per-note` for one file per note id (default: `combined`)
+- `--output` output file path for `combined`, or target directory for `per-note`; when omitted, `combined` defaults to `full_zettelkasten.txt` and `per-note` defaults to `.exports/full_zettelkasten`
+
+Per-note mode writes files as `NOTE_ID.md`.
 
 ## `export-retrospectives`
 

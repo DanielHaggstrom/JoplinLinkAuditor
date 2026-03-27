@@ -58,7 +58,10 @@ joplin-utils reachability --output-json unreachable.json
 
 ```bash
 joplin-utils export-full --output full_zettelkasten.txt
+joplin-utils export-full --mode per-note --output .exports/full_zettelkasten
 ```
+
+Per-note mode writes one `NOTE_ID.md` file per note.
 
 ### Retrospective export
 

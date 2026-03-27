@@ -41,7 +41,16 @@ def _build_parser() -> argparse.ArgumentParser:
         "export-full",
         help="Export full vault text with tags and metadata.",
     )
-    p_export_full.add_argument("--output", default="full_zettelkasten.txt", help="Output path")
+    p_export_full.add_argument(
+        "--output",
+        help="Output file for combined mode, or target directory for per-note mode",
+    )
+    p_export_full.add_argument(
+        "--mode",
+        choices=["combined", "per-note"],
+        default="combined",
+        help="Export mode (default: combined)",
+    )
     p_export_full.set_defaults(handler=handle_export_full)
 
     p_export_retro = subparsers.add_parser(
