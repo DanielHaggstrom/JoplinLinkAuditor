@@ -6,6 +6,7 @@
 - Text export (full vault export with tags)
 - Text export for retrospectives/journals
 - Note creation analytics (monthly counts + optional chart)
+- Link-structure analytics (entropy, communities, compression proxy)
 
 This repository intentionally excludes the old tagging pipeline and related state files.
 
@@ -73,6 +74,13 @@ joplin-utils export-retrospectives --output journals.txt --title-contains Retros
 
 ```bash
 joplin-utils analytics-created --output-csv note_creation.csv --output-plot note_creation.png
+```
+
+### Link-structure analytics
+
+```bash
+joplin-utils analytics-links
+joplin-utils analytics-links --output-json link_metrics.json --top-k 15
 ```
 
 See [CLI reference](docs/CLI.md) for complete command options.

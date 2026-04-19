@@ -61,3 +61,17 @@ Options:
 
 - `--output-csv` optional CSV output path
 - `--output-plot` optional PNG chart output path
+
+## `analytics-links`
+
+Compute link-graph entropy, local branching, community structure, and a simple compression proxy.
+
+```bash
+joplin-utils analytics-links [--output-json link_metrics.json] [--top-k 10] [--pagerank-alpha 0.85]
+```
+
+Options:
+
+- `--output-json` optional JSON report output path
+- `--top-k` number of ranked notes to show in the terminal output (default: `10`)
+- `--pagerank-alpha` PageRank damping factor used to weight the entropy-rate summary (default: `0.85`)

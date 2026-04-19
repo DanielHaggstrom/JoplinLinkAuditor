@@ -8,6 +8,7 @@ import sys
 from joplin_utils.client import JoplinClient
 from joplin_utils.commands.analytics import handle_analytics_created
 from joplin_utils.commands.exporters import handle_export_full, handle_export_retrospectives
+from joplin_utils.commands.link_analytics import handle_analytics_links
 from joplin_utils.commands.reachability import handle_reachability
 from joplin_utils.env import load_env_file, resolve_setting
 
@@ -72,6 +73,25 @@ def _build_parser() -> argparse.ArgumentParser:
     p_analytics.add_argument("--output-csv", help="Optional CSV output path")
     p_analytics.add_argument("--output-plot", help="Optional PNG chart output path")
     p_analytics.set_defaults(handler=handle_analytics_created)
+
+    p_link_analytics = subparsers.add_parser(
+        "analytics-links",
+        help="Compute entropy and structure metrics for the note-link graph.",
+    )
+    p_link_analytics.add_argument("--output-json", help="Optional JSON report output path")
+    p_link_analytics.add_argument(
+        "--top-k",
+        type=int,
+        default=10,
+        help="How many notes to show in ranked sections (default: 10)",
+    )
+    p_link_analytics.add_argument(
+        "--pagerank-alpha",
+        type=float,
+        default=0.85,
+        help="PageRank damping factor used for entropy-rate weighting (default: 0.85)",
+    )
+    p_link_analytics.set_defaults(handler=handle_analytics_links)
 
     return parser
 

@@ -3,34 +3,20 @@
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict
 
 import networkx as nx
 
 from joplin_utils.client import JoplinClient
-
-LINK_RE = re.compile(r"\[.*?\]\(:/([a-fA-F0-9]{32})\)")
-
-
-def _extract_note_links(body: str) -> List[str]:
-    return LINK_RE.findall(body or "")
+from joplin_utils.link_graph import build_note_link_graph
 
 
 def build_reachability_report(client: JoplinClient, index_note_id: str) -> Dict[str, object]:
-    notes = client.list_notes(fields=["id", "title", "body"])
-    note_ids = {note["id"] for note in notes}
-    id_to_title = {note["id"]: (note.get("title") or "").strip() for note in notes}
-
-    graph = nx.Graph()
-    graph.add_nodes_from(note_ids)
-
-    for note in notes:
-        source_id = note["id"]
-        for target_id in _extract_note_links(note.get("body", "")):
-            if target_id in note_ids:
-                graph.add_edge(source_id, target_id)
+    link_data = build_note_link_graph(client)
+    graph = link_data.undirected_graph
+    note_ids = set(link_data.id_to_title.keys())
+    id_to_title = link_data.id_to_title
 
     if index_note_id not in graph:
         raise ValueError(f"Index note id {index_note_id} not found in note set.")
@@ -44,7 +30,7 @@ def build_reachability_report(client: JoplinClient, index_note_id: str) -> Dict[
 
     return {
         "index_note_id": index_note_id,
-        "total_notes": len(notes),
+        "total_notes": len(link_data.notes),
         "connected_count": len(connected),
         "unreachable_count": len(unreachable),
         "unreachable": unreachable,
